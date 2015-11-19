@@ -1,4 +1,4 @@
-Package:shinyStepPage
+Package:multiStepPage
 Type:Package
 Title:Multistep page with progress tracking
 Description:Create a new UI for shiny. A  Multistep page with progress tracking and smooth transitions,
