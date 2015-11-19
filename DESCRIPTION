@@ -1,0 +1,15 @@
+Package:shinyStepPage
+Type:Package
+Title:Multistep page with progress tracking
+Description:Create a new UI for shiny. A  Multistep page with progress tracking and smooth transitions,
+Version: 0.1
+Date: 2015-11-19
+Authors@R: c(
+  person("Luis", "Rodriguez-Lujan", role=c("aut","cre"), email="luis.rodriguezl@upm.es")
+)
+BugReports: https://github.com/lrodriguezlujan/shinyStepPage/issues
+License: GPL (>=2)
+Depends:
+Imports:
+  shinyBS( >= 0.61 )
+Enhances: shiny
