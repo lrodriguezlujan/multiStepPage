@@ -2,6 +2,25 @@ html, body {
     height: 100%;
 }
 
+.static-controls{
+    margin: 10px 10px 40px 10px;
+}
+
+.control{
+    font-family: verdana;
+    font-size: 17px;
+    color: #222222;
+    cursor: pointer;
+}
+
+.back{
+    float:left;
+
+}
+.fwd{
+    float:right;
+}
+
 .progresstrack-container {
     width: 100%;
     overflow: hidden;
@@ -104,6 +123,7 @@ html, body {
     position: absolute;
     top: 0;
     left: 0;
+    margin: 10px;
     visibility: hidden;
     overflow: hidden;
     -webkit-backface-visibility: hidden;

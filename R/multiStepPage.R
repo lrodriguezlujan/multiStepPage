@@ -27,9 +27,19 @@
 multiStepPage <- function(id , ... , title = NULL,
                           topButtons = FALSE, bottomButons = TRUE){
 
-  # TODO:
-  topButtonElement = NULL
-  botButtonElement = NULL
+  butEl <- div(class = "static-controls",
+               div( class = "control back", "Previous"),
+               div( class = "control fwd", "Next" ))
+
+  if (topButtons)
+    topButtonEl <- butEl
+  else
+    topButtonEl <- NULL
+
+  if (bottomButons)
+    botButtonEl <- butEl
+  else
+    botButtonEl <- NULL
 
   # Create track boxes
   tracker <- createProgressTracker(title, ...)
@@ -48,7 +58,9 @@ multiStepPage <- function(id , ... , title = NULL,
       div( id = id, class = "multiStepPage-container pt-perspective",
         tracker,
         hr(),
-        pages
+        topButtonEl,
+        pages,
+        botButtonEl
       )
     )
   )

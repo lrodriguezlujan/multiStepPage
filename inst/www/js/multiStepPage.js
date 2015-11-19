@@ -57,6 +57,8 @@ var MultiStepPage;
 
       // Event names
       this.animEndEventName = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
+      this.enableFwd = true;
+      this.enableBack = true;
 
     }
 
@@ -78,15 +80,36 @@ var MultiStepPage;
 
       // Set box status
       updateBoxes();
+      updateControls();
 
       // Add listeners to tracker boxes
       boxes.on('click', function () {
         if (isAnimating) {
           return false;
         }
-        var $box = $(this);
 
-        self.gotoPage(parseInt($box.attr("step-num")));
+        var $box = $(this);
+        var step = parseInt($box.attr("step-num"));
+
+        if( (step > current) && !self.enableFwd ) return false;
+        else if( (step < current) && !self.enableBack ) return false;
+
+        self.gotoPage(step);
+      });
+
+      // Also add listeners to controls
+      main.find(".control.fwd").on('click', function(){
+        if (isAnimating || !self.enableFwd )
+          return false;
+        else
+          self.next();
+      });
+
+      main.find(".control.back").on('click', function(){
+        if (isAnimating || !self.enableBack )
+          return false;
+        else
+          self.previous();
       });
 
         var max = -1;
@@ -95,7 +118,8 @@ var MultiStepPage;
           var h = $(this).height();
           max = h > max ? h : max;
         });
-        pageContainer.height(max);
+        // +20 (margins)
+        pageContainer.height(max+20);
 
     };
 
@@ -145,13 +169,17 @@ var MultiStepPage;
           var h = $(this).height();
           max = h > max ? h : max;
         });
-        pageContainer.height(max);
+        // +20 (margins)
+        pageContainer.height(max+20);
 
         // Start animation
         animate($currPage, $nextPage, outClass, inClass);
 
         // Update tracker
         updateBoxes();
+
+        // Update controls
+        updateControls();
     };
 
 
@@ -229,6 +257,25 @@ var MultiStepPage;
       $this.addClass(computedClass);
     });
   }
+
+  function updateControls(){
+
+    if(current == 0){
+      main.find(".control.back").each( function(i,e){$(e).fadeOut(350)} );
+      main.find(".control.fwd").each( function(i,e){if(! ($(e).is(":visible") ))$(e).fadeIn(350)} );
+    }
+    else if ( current == (pagesCount -1) ){
+      main.find(".control.fwd").each( function(i,e){$(e).fadeOut(350)} );
+      main.find(".control.back").each( function(i,e){if(! ($(e).is(":visible") ))$(e).fadeIn(350)} );
+    }
+    else{
+      main.find(".control.fwd").each( function(i,e){if(! ($(e).is(":visible") ))$(e).fadeIn(350)} );
+      main.find(".control.back").each( function(i,e){if(! ($(e).is(":visible") ))$(e).fadeIn(350)} );
+    }
+
+  }
+
+
 
   return Tracker;
 
