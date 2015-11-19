@@ -57,8 +57,8 @@ var MultiStepPage;
 
       // Event names
       this.animEndEventName = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
-      this.enableFwd = true;
-      this.enableBack = true;
+      this.allowFwd = true;
+      this.allowBack = true;
 
     }
 
@@ -91,22 +91,22 @@ var MultiStepPage;
         var $box = $(this);
         var step = parseInt($box.attr("step-num"));
 
-        if( (step > current) && !self.enableFwd ) return false;
-        else if( (step < current) && !self.enableBack ) return false;
+        if( (step > current) && !self.allowFwd ) return false;
+        else if( (step < current) && !self.allowBack ) return false;
 
         self.gotoPage(step);
       });
 
       // Also add listeners to controls
       main.find(".control.fwd").on('click', function(){
-        if (isAnimating || !self.enableFwd )
+        if (isAnimating || !self.allowFwd )
           return false;
         else
           self.next();
       });
 
       main.find(".control.back").on('click', function(){
-        if (isAnimating || !self.enableBack )
+        if (isAnimating || !self.allowBack )
           return false;
         else
           self.previous();

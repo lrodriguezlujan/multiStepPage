@@ -41,7 +41,13 @@
       var $el = $(el);
       var id = $el.attr("id");
       var tracker = MultiStepPage.ActiveTrackers[id];
-      tracker.gotoPage(data);
+
+      if(data.action == "goto")
+        tracker.gotoPage(data.value);
+      else if(data.action == "fwd")
+        tracker.allowFwd = data.value;
+      else if(data.action == "back")
+        tracker.allowBack = data.value;
   };
 
   // Get current state?

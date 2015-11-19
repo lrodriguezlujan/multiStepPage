@@ -80,6 +80,43 @@ stepPage <- function(description, ... ){
   return(list(description = description, content = tagList(...)))
 }
 
+#' Changes current step
+#'
+#' Changes current step to the one given
+#'
+#' @param session
+#' @param id
+#' @param page
+#'
+#'@export
+changeStep <- function(session, id, page){
+  session$sendInputMessage(id,list(action = "goto", value = (page - 1) ) )
+}
+
+#' Allows/disallows progression
+#'
+#'
+#' @param session
+#' @param id
+#' @param status (T/F)
+#'
+#'@export
+switchStepForward <- function(session, id, status){
+  session$sendInputMessage(id,list(action = "fwd", value = status))
+}
+
+#' Allows/disallows going back
+#'
+#'
+#' @param session
+#' @param id
+#' @param status (T/F)
+#'
+#'@export
+switchStepBack <- function(session, id, status){
+  session$sendInputMessage(id,list(action = "back", value = status))
+}
+
 createProgressTracker <- function(title, ...){
 
   # Get elements (each one created by stepPage)
