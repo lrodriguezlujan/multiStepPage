@@ -25,11 +25,7 @@
 #'
 #' @export
 multiStepPage <- function(id , ... , title = NULL,
-                          topButtons = FALSE, bottomButons = TRUE, width = "100%" , height = "100%"){
-
-  # Convert units and validate. Create style string
-  style <- sprintf("width: %s; height: %s;",
-                   validateCssUnit(width), validateCssUnit(height))
+                          topButtons = FALSE, bottomButons = TRUE){
 
   # TODO:
   topButtonElement = NULL
@@ -46,13 +42,13 @@ multiStepPage <- function(id , ... , title = NULL,
     tagList(
       singleton(tags$head(
         tags$script(src = "multisteppage/js/multiStepPage.js"),
+        tags$script(src = "multisteppage/js/multiStepPage-binding.js"),
         tags$link(rel = "stylesheet", type = "text/css", href = "multisteppage/css/multiStepPage.css")
       )),
-      div( id = id, class = "multiStepPage-container", style = style,
+      div( id = id, class = "multiStepPage-container pt-perspective",
         tracker,
-        topButtonElement,
-        pages,
-        botButtonElement
+        hr(),
+        pages
       )
     )
   )
@@ -99,9 +95,6 @@ createProgressTracker <- function(title, ...){
   # Add boxes
   container <- tagAppendChildren(container,list = boxes)
 
-  # hr sep.
-  container <- tagAppendChild(container, tags$hr )
-
   return(container)
 }
 
@@ -118,4 +111,13 @@ createPageContainer <- function(id, ...){
     return( div( class = "pt-page", id = paste(id,"page",i,sep = "-"), x[[i]]$content ) )
   },elements)
 
+  # Add boxes
+  container <- tagAppendChildren(container,list = pages)
+
+  return(container)
 }
+
+# AS input binding
+shiny::registerInputHandler("shiny.multiStepPage", function(data, ...) {
+  return(data)
+}, force = TRUE)

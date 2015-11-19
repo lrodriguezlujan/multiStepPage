@@ -3,33 +3,57 @@ var MultiStepPage;
 (function(MultiStepPage){
 
   // Object with active trackers by ID
-  var ActiveTrackers = {};
+  MultiStepPage.ActiveTrackers = {};
 
   var Tracker = (function() {
 
-    /** Constructor **/
-    function Tracker( el ){
-
-      var self = this;
+      // Cache this
+      var self;
 
       // Main tab
-      var main = $(el);
-      var id = main.attr("id");
+      var main ;
+      var id ;
 
       // Pages
-      var pages = this.main.find('div.pt-page');
-      var pagesCount = this.pages.length;
+      var pages ;
+      var pageContainer;
+      var pagesCount = 0;
 
       // progressbox
-      var boxes = this.main.find('div.progresstrack-box.clickable');
+      var boxes ;
 
       // Active page
-      var current = 0;
+      var current ;
 
       // Animation status
       var isAnimating = false;
       var endCurrPage = false;
       var endNextPage = false;
+
+    /** Constructor **/
+    function Tracker( el ){
+
+      self = this;
+
+      // Main tab
+      main = $(el);
+      id = main.attr("id");
+
+      // Pages
+      pages = main.find('div.pt-page');
+      pageContainer = main.find('div.pt-page-container');
+      pagesCount = pages.length;
+
+      // progressbox
+      boxes = main.find('div.progresstrack-box.clickable');
+
+      // Active page
+      current = 0;
+
+      // Animation status
+      isAnimating = false;
+      endCurrPage = false;
+      endNextPage = false;
 
       // Event names
       this.animEndEventName = 'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd';
@@ -44,28 +68,40 @@ var MultiStepPage;
     Tracker.prototype.init = function(){
 
       // Save original classes for each page
-      this.pages.each(function () {
+      pages.each(function () {
         var $page = $(this);
         $page.data('originalClassList', $page.attr('class'));
       });
 
       // Set current class for (current page)
-      this.pages.eq(current).addClass('pt-page-current');
+      pages.eq(current).addClass('pt-page-current');
 
       // Set box status
       updateBoxes();
 
       // Add listeners to tracker boxes
-      this.boxes.on('click', function () {
+      boxes.on('click', function () {
         if (isAnimating) {
           return false;
         }
         var $box = $(this);
 
-        gotoPage(parseInt($box.attr("step-num")));
+        self.gotoPage(parseInt($box.attr("step-num")));
       });
 
+        var max = -1;
+        // Page max height
+        pages.each(function() {
+          var h = $(this).height();
+          max = h > max ? h : max;
+        });
+        pageContainer.height(max);
+
     };
+
+    Tracker.prototype.getCurrent = function(){
+      return current;
+    }
 
     /** Go to given page */
     Tracker.prototype.gotoPage = function (step){
@@ -86,7 +122,7 @@ var MultiStepPage;
         var outClass, inClass;
 
         // Moving back
-        if (current > num) {
+        if (current > step) {
           outClass = 'pt-page-moveToRightEasing pt-page-ontop';
           inClass = 'pt-page-moveFromLeft';
         }
@@ -97,10 +133,19 @@ var MultiStepPage;
         }
 
         // update current
-        current = num;
+        current = step;
 
         // Get next page and set it to current
         var $nextPage = pages.eq(current).addClass('pt-page-current');
+
+
+        var max = -1;
+        // Just in case, recompute max
+        pages.each(function() {
+          var h = $(this).height();
+          max = h > max ? h : max;
+        });
+        pageContainer.height(max);
 
         // Start animation
         animate($currPage, $nextPage, outClass, inClass);
@@ -123,8 +168,6 @@ var MultiStepPage;
 
     /* Animate page transition */
     function animate(currentPage, nextPage, outClass, inClass) {
-
-        var self = this; // Cachke this
 
         // Add class to current page and set an animation end event
         currentPage.addClass(outClass).on(self.animEndEventName, function () {
@@ -152,6 +195,9 @@ var MultiStepPage;
       endNextPage = false;
       resetPage($outpage, $inpage);
       isAnimating = false;
+      // Trigger change event
+      main.trigger("change");
+
     }
 
   // Reset original classes for animated pages once animation has ended
