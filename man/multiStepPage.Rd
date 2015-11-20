@@ -4,8 +4,8 @@
 \alias{multiStepPage}
 \title{MultiStepPage element}
 \usage{
-multiStepPage(id, ..., title = NULL, topButtons = FALSE,
-  bottomButons = TRUE)
+multiStepPage(id, ..., title = NULL, prePage = NULL, postPage = NULL,
+  topButtons = FALSE, bottomButons = TRUE)
 }
 \arguments{
 \item{height}{}

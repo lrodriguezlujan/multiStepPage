@@ -125,7 +125,7 @@ var MultiStepPage;
 
     Tracker.prototype.getCurrent = function(){
       return current;
-    }
+    };
 
     /** Go to given page */
     Tracker.prototype.gotoPage = function (step){
@@ -238,8 +238,10 @@ var MultiStepPage;
   function updateBoxes(){
 
      boxes.each( function(index){
+
       // Get element
       var $this = $(this);
+      var step = $this.attr("step-num");
 
       // Remove any past / future / current
       $this.removeClass("past future current");
@@ -249,8 +251,8 @@ var MultiStepPage;
 
       // Now set the appropiate class
       var computedClass = '';
-      if( index < current ) computedClass = "past";
-      else if (index == current ) computedClass = "current";
+      if( step < current ) computedClass = "past";
+      else if (step == current ) computedClass = "current";
       else computedClass = "future";
 
       $this.find(".progresstrack-icon").addClass(computedClass);
@@ -260,7 +262,7 @@ var MultiStepPage;
 
   function updateControls(){
 
-    if(current == 0){
+    if(current === 0){
       main.find(".control.back").each( function(i,e){$(e).fadeOut(350)} );
       main.find(".control.fwd").each( function(i,e){if(! ($(e).is(":visible") ))$(e).fadeIn(350)} );
     }

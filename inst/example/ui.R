@@ -12,6 +12,8 @@ shinyUI(
                       stepPage("Summon a cat army", "Cats everywhere"),
                       stepPage("Eat a sandwich", "Nam!", br(), ":)"),
                       stepPage("Conquer the world", "B4 dinner"),
+                      prePage = div("PRE PAGE TEST"),
+                      postPage = div("POST PAGE TEST"),
                       title = "Masterplan", topButtons = T, bottomButons = T)
       )
     )

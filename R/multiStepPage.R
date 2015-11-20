@@ -24,7 +24,7 @@
 #' @return A multistep page container (div)
 #'
 #' @export
-multiStepPage <- function(id , ... , title = NULL,
+multiStepPage <- function(id , ... , title = NULL, prePage = NULL, postPage = NULL,
                           topButtons = FALSE, bottomButons = TRUE){
 
   butEl <- div(class = "static-controls",
@@ -42,8 +42,8 @@ multiStepPage <- function(id , ... , title = NULL,
     botButtonEl <- NULL
 
   # Create track boxes
-  tracker <- createProgressTracker(title, ...)
-  pages <- createPageContainer(id,...)
+  tracker <- createProgressTracker(title, pageOffset = ifelse(is.null(prePage),0,1), ...)
+  pages <- createPageContainer(id, prePage, postPage, ...)
 
   # Create pages
 
@@ -117,7 +117,7 @@ switchStepBack <- function(session, id, status){
   session$sendInputMessage(id,list(action = "back", value = status))
 }
 
-createProgressTracker <- function(title, ...){
+createProgressTracker <- function(title, pageOffset = 0, ...){
 
   # Get elements (each one created by stepPage)
   elements <- list(...)
@@ -127,7 +127,7 @@ createProgressTracker <- function(title, ...){
 
   # Create the box for each step
   boxes <- lapply(seq_along(elements), function(i,x){
-    return( div( class = "progresstrack-box clickable", 'step-num' = (i - 1),
+    return( div( class = "progresstrack-box clickable", 'step-num' = (i - 1 + pageOffset),
                  div( class = "progresstrack-icon" ),
                  div( class = "progresstrack-text",
                       div( class = "progresstrack-step", sprintf("Step %d:", i )),
@@ -147,10 +147,19 @@ createProgressTracker <- function(title, ...){
   return(container)
 }
 
-createPageContainer <- function(id, ...){
+createPageContainer <- function(id, prePage, postPage, ...){
 
   # Get elements (each one created by stepPage)
   elements <- list(...)
+
+  # Pre and post pages
+  if (!is.null(prePage)) preEl <- list(content = prePage )
+  else preEl <- NULL
+
+  if (!is.null(postPage)) postEl <- list(content = postPage )
+  else postEl <- NULL
+
+  elements <- c(list(preEl), elements, list(postEl) )
 
   # Create container div
   container <- div( class = "pt-page-container")
@@ -159,6 +168,8 @@ createPageContainer <- function(id, ...){
   pages <- lapply(seq_along(elements), function(i,x){
     return( div( class = "pt-page", id = paste(id,"page",i,sep = "-"), x[[i]]$content ) )
   },elements)
+
+
 
   # Add boxes
   container <- tagAppendChildren(container,list = pages)
