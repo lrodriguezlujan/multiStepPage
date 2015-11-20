@@ -5,7 +5,7 @@
 \title{MultiStepPage element}
 \usage{
 multiStepPage(id, ..., title = NULL, prePage = NULL, postPage = NULL,
-  topButtons = FALSE, bottomButons = TRUE)
+  topButtons = FALSE, bottomButtons = TRUE)
 }
 \arguments{
 \item{height}{}

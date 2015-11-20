@@ -25,7 +25,7 @@
 #'
 #' @export
 multiStepPage <- function(id , ... , title = NULL, prePage = NULL, postPage = NULL,
-                          topButtons = FALSE, bottomButons = TRUE){
+                          topButtons = FALSE, bottomButtons = TRUE){
 
   butEl <- div(class = "static-controls",
                div( class = "control back", "Previous"),
