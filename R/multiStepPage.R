@@ -5,7 +5,7 @@
 #' @noRd
 #'
 .onAttach <- function(...) {
-  addResourcePath('multisteppage', system.file('www', package = 'shinyStepPage'))
+  addResourcePath('multisteppage', system.file('www', package = 'multiStepPage'))
 }
 
 #' MultiStepPage element
