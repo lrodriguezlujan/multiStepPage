@@ -2,6 +2,7 @@
 
 export(changeStep)
 export(multiStepPage)
+export(multiStepPageUpdateHeight)
 export(stepPage)
 export(switchStepBack)
 export(switchStepForward)

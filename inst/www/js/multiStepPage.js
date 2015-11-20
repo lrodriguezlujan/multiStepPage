@@ -112,14 +112,7 @@ var MultiStepPage;
           self.previous();
       });
 
-        var max = -1;
-        // Page max height
-        pages.each(function() {
-          var h = $(this).height();
-          max = h > max ? h : max;
-        });
-        // +20 (margins)
-        pageContainer.height(max+20);
+      updatePageMaxHeight();
 
     };
 
@@ -162,15 +155,7 @@ var MultiStepPage;
         // Get next page and set it to current
         var $nextPage = pages.eq(current).addClass('pt-page-current');
 
-
-        var max = -1;
-        // Just in case, recompute max
-        pages.each(function() {
-          var h = $(this).height();
-          max = h > max ? h : max;
-        });
-        // +20 (margins)
-        pageContainer.height(max+20);
+        updatePageMaxHeight();
 
         // Start animation
         animate($currPage, $nextPage, outClass, inClass);
@@ -189,10 +174,25 @@ var MultiStepPage;
     /* Move to previous page */
     Tracker.prototype.previous = function (){ this.gotoPage(current-1) };
 
+    // Force height update
+    Tracker.prototype.updatePageHeight= function(){ updatePageMaxHeight() };
 
 /****************************
  * PRIVATE FUNCTIONS
  * ***************************/
+
+    // Recompute page height
+    function updatePageMaxHeight() {
+
+        var max = -1;
+        // Just in case, recompute max
+        pages.each(function() {
+          var h = $(this).height();
+          max = h > max ? h : max;
+        });
+        // +20 (margins)
+        pageContainer.height(max+20);
+    }
 
     /* Animate page transition */
     function animate(currentPage, nextPage, outClass, inClass) {

@@ -36,7 +36,7 @@ multiStepPage <- function(id , ... , title = NULL, prePage = NULL, postPage = NU
   else
     topButtonEl <- NULL
 
-  if (bottomButons)
+  if (bottomButtons)
     botButtonEl <- butEl
   else
     botButtonEl <- NULL
@@ -115,6 +115,16 @@ switchStepForward <- function(session, id, status){
 #'@export
 switchStepBack <- function(session, id, status){
   session$sendInputMessage(id,list(action = "back", value = status))
+}
+
+#' Force page heigth update (for environments liketabpages)
+#'
+#' @param session
+#' @param id
+#'
+#' @export
+multiStepPageUpdateHeight <- function(session ,id ){
+  session$sendInputMessage(id,list(action = "updateHeight"))
 }
 
 createProgressTracker <- function(title, pageOffset = 0, ...){

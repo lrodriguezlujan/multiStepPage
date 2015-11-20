@@ -14,7 +14,7 @@ shinyUI(
                       stepPage("Step 3 description", "This is the third page "),
                       prePage = div("PRE PAGE "),
                       postPage = div("POST PAGE"),
-                      title = "Masterplan", topButtons = T, bottomButons = T)
+                      title = "Masterplan", topButtons = T, bottomButtons = T)
       )
     )
   )

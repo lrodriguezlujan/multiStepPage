@@ -48,6 +48,8 @@
         tracker.allowFwd = data.value;
       else if(data.action == "back")
         tracker.allowBack = data.value;
+      else if(data.action == "updateHeight")
+        tracker.updatePageHeight();
   };
 
   // Get current state?
